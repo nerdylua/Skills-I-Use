@@ -31,6 +31,12 @@
       "sourceType": "github",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
     },
+    "hyperframes": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes/SKILL.md",
+      "computedHash": "f726a7478c7a3133e763c9af5f8ade12bc65dbdf32f09a854696ebabc68433a5"
+    },
     "karpathy-guidelines": {
       "source": "forrestchang/andrej-karpathy-skills",
       "sourceType": "github",
