@@ -1,4 +1,4 @@
-﻿---
+---
 name: premium-ui-prompt-crafter
 description: Generate long, technically exact prompts for one-shot premium hero sections and landing pages. Use when the user wants beautiful UI prompts, MotionSites-style hero or landing page prompting, UI requirement interviews, visual direction into Vite/Next.js prompts, video/background asset direction, or highly specified React/Tailwind UI generation prompts.
 ---
