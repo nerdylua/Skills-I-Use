@@ -10,7 +10,7 @@ Recurring traits:
 - Stack pinned early: React, TypeScript, Vite/Next.js, Tailwind, animation library, icon package, forbidden libraries.
 - Typography treated as a core asset: font source, weights, global application, display/body/accent roles, tracking and line-height.
 - Colors are tokens, not adjectives: exact hex or HSL variables, semantic usage, forbidden colors.
-- One signature visual: fullscreen video, Spline scene, shader stack, dashboard mockup, glass orb, animated pipeline, marquee gallery, or large editorial type.
+- One signature visual, with video as the preferred default: fullscreen AI-generated video, ambient product footage, Spline scene with motion backdrop, shader stack, dashboard mockup, glass orb, animated pipeline, marquee gallery, or large editorial type.
 - Media details are exact: URL, object-fit, focal point, scale, overlay/no-overlay, poster, playback attributes, crossfade logic.
 - Layout is measurable: viewport height, max-widths, padding, grid columns, absolute positions, z-index, radius, card dimensions.
 - Copy is complete: headline, subheadline, nav labels, CTA labels, stats, card text, testimonial text.
@@ -43,12 +43,12 @@ If the user does not know what they want, interview first. Use these defaults on
 - Animation: Framer Motion for entrance/scroll; CSS for simple hover/keyframes; GSAP only for complex parallax/timelines.
 - Visual style: cinematic premium, one accent color, restrained palette, no decorative clutter.
 - Layout: full-viewport hero with floating pill nav, large headline, focused CTA, one signature visual.
-- Fonts: Inter for UI/body, Instrument Serif for editorial accent, or a category-specific display font.
+- Fonts: Inter or Instrument Sans for UI/body, Instrument Serif for editorial accent, or a category-specific display font. Instrument Sans is especially strong for premium hero typography when you want clean, graceful, modern letterforms.
 - Responsiveness: mobile-first, nav collapses below md, typography uses clamp or Tailwind responsive sizes.
 
 ## Prompt Template
 
-Write the final implementation prompt to `design.md`, not to chat. If the design needs an AI-generated video, put only a hosted video URL placeholder in `design.md`; send the video-generation prompt separately in chat.
+Write the final implementation prompt to `design.md`, not to chat. Assume the hero or most important section should use an AI-generated video asset unless the user forbids video, the platform/performance constraints rule it out, or a static typographic concept is clearly stronger. Put only a hosted video URL placeholder in `design.md`; send the video-generation prompt separately in chat.
 
 ```markdown
 Build a [scope] for [product name], a [category] for [audience], using [stack]. The aesthetic is [visual world] with [signature visual]. Reproduce the following specification exactly.
@@ -110,7 +110,7 @@ Render components in this order:
 
 ## Video Asset Brief Template
 
-Use this in the chat response only, not inside `design.md`. Tell the user to generate the video in their AI video tool, host the MP4/WebM, then replace the video URL placeholder in `design.md`.
+Use this in the chat response only, not inside `design.md`. Prefer including this for most hero or premium-section prompts. Tell the user to generate the video in their AI video tool, host the MP4/WebM, then replace the video URL placeholder in `design.md`.
 
 ```markdown
 Create a seamless looping background video for [brand/product].

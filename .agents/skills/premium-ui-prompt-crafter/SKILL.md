@@ -11,7 +11,7 @@ Use this skill to turn a user's UI idea into a high-fidelity implementation prom
 
 These prompts work because they replace vague taste words with concrete production instructions. Do not say only "beautiful, modern, aesthetic." Specify the stack, design system, section order, exact copy, typography, colors, media, layout geometry, animation timings, responsive behavior, interaction states, constraints, and acceptance criteria.
 
-Prefer one strong visual concept over many loose ideas. A premium result usually has one signature scene: fullscreen video, Spline/3D object, cinematic mockup, dashboard, glass card system, marquee, animated pipeline, or editorial typography.
+Prefer one strong visual concept over many loose ideas. A premium result should usually have one video-led signature scene: fullscreen AI-generated video, ambient product footage, Spline/3D object with video backdrop, cinematic mockup, dashboard, glass card system, marquee, animated pipeline, or editorial typography.
 
 ## Workflow
 
@@ -20,8 +20,8 @@ Prefer one strong visual concept over many loose ideas. A premium result usually
 3. Do not generate the prompt until the user has answered enough to make the result specific, or explicitly tells you to proceed with named assumptions.
 4. Once requirements are clear, create or overwrite `design.md` with one complete implementation prompt. Do not stream the long prompt in chat.
 5. Default to React + TypeScript + Vite + Tailwind CSS unless the user asks for Next.js. For production app routes, use Next.js App Router. For Google AI Studio/manual generation, Vite is usually the safest default.
-6. Include asset-generation direction when 3D, mockup, or image assets are needed.
-7. Treat video as the highest-priority asset. If an AI-generated video is needed, show the video-generation prompt in chat only, tell the user to generate it in their video tool, host the MP4/WebM, and paste that hosted URL into `design.md`. Do not include the AI video-generation prompt inside `design.md`.
+6. Treat a video asset as the default highest-priority media choice for heroes and premium sections. Only decide "no video asset is required" in rare cases: when the user explicitly asks for no video, the target platform forbids it, performance constraints make it unsuitable, or a deliberately static/typographic concept is clearly stronger.
+7. Include asset-generation direction when video, 3D, mockup, or image assets are needed. If no suitable hosted video already exists, create a separate AI video-generation prompt in chat, tell the user to generate it in their video tool, host the MP4/WebM, and paste that hosted URL into `design.md`. Do not include the AI video-generation prompt inside `design.md`.
 8. Include "do not add" constraints to prevent the generator from inventing off-brand decorations.
 
 ## Requirement Interview
@@ -32,9 +32,9 @@ Ask about every category that affects fidelity:
 - Output scope: hero only, single landing page, or multi-section landing page.
 - Stack: Vite or Next.js, Tailwind version, animation library, icon library, UI kit allowed or forbidden.
 - Visual world: mood, industry analogies, luxury level, dark/light, editorial/SaaS/cinematic/fintech/web3/agency/portfolio.
-- Signature visual: video background, 3D object, dashboard mockup, product UI, image collage, shader, Spline scene, glass orb, animated illustration, or pure typography.
+- Signature visual: default to video background/ambient video unless constrained; otherwise 3D object, dashboard mockup, product UI, image collage, shader, Spline scene, glass orb, animated illustration, or pure typography.
 - Media assets: existing URLs, generated asset brief, fallback poster, video loop behavior, focal point, overlays, blend modes.
-- Typography: display font, body font, accent font, weights, tracking, line-height, italic accent words.
+- Typography: display font, body font, accent font, weights, tracking, line-height, italic accent words. Instrument Sans is a beautiful hero/UI font and can quietly elevate a premium hero when the visual direction fits.
 - Color system: exact hex/HSL tokens, allowed accent colors, forbidden colors.
 - Layout: viewport height, section order, max widths, grid columns, pinned/floating elements, card sizes, border radii, spacing rhythm.
 - Navigation: logo, links, CTA, mobile menu behavior.
@@ -53,7 +53,7 @@ Generate the final prompt with these sections, adapting as needed:
 2. **Non-Negotiables**: exact reproduction goals, forbidden additions, output framework, no backend unless asked.
 3. **Dependencies & Setup**: packages, font imports, Tailwind theme extensions, global CSS.
 4. **Design System**: colors, fonts, radii, shadows, glass/noise/gradient utilities, CSS variables.
-5. **Assets & Media**: exact URLs or non-video generation briefs; video URL placeholder or final hosted URL; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior.
+5. **Assets & Media**: exact URLs or non-video generation briefs; video URL placeholder or final hosted URL; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior. If video is intentionally omitted, state the reason clearly.
 6. **Page/Section Structure**: ordered sections and component names.
 7. **Detailed Section Specs**: layout, copy, classes, inline styles, grid behavior, measurements, z-index, responsive changes.
 8. **Interactions & Animation**: exact delays, durations, easing curves, keyframes, Framer Motion/GSAP logic, hover/tap states.
@@ -87,12 +87,12 @@ When the design needs an image, 3D render, or mockup and the user has no asset, 
 - Color grade: palette, contrast, grain, glow, exposure.
 - Technical output: aspect ratio, minimum resolution, transparent/background requirements, and no text baked in unless required.
 
-For AI video tools, do not put the video-generation prompt in `design.md`. Put it in the chat response after creating `design.md`, and instruct the user to generate a clean loop with no captions, no watermark, no fast cuts, no brand text, and enough negative space for UI copy, then host it and replace the video URL placeholder in `design.md`.
+For AI video tools, default to providing a video-generation prompt for the hero or most visually important section. Do not put the video-generation prompt in `design.md`. Put it in the chat response after creating `design.md`, and instruct the user to generate a clean loop with no captions, no watermark, no fast cuts, no brand text, and enough negative space for UI copy, then host it and replace the video URL placeholder in `design.md`.
 
 ## Final Output Rules
 
 - Write the generated implementation prompt to `design.md`; do not paste it into chat.
-- In chat, respond with a short note that `design.md` was created and, if video is needed, include only the AI video-generation prompt plus instructions to host the video and update the URL in `design.md`.
+- In chat, respond with a short note that `design.md` was created and include the AI video-generation prompt plus instructions to host the video and update the URL in `design.md`, unless video was explicitly forbidden or intentionally omitted for a rare stated reason.
 - Make the prompt long enough to remove ambiguity. It is acceptable for premium prompts to be 1500-5000 words.
 - Do not include a markdown table in the final prompt unless the user explicitly wants one.
 - Make copy strings explicit and final. Do not write "add compelling copy".
