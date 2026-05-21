@@ -36,7 +36,7 @@ Weak:
 
 ## Interview Defaults
 
-If the user does not know what they want, use these defaults:
+If the user does not know what they want, interview first. Use these defaults only after asking targeted follow-ups or after the user explicitly asks you to proceed:
 
 - Framework: Vite + React 18 + TypeScript + Tailwind CSS 3.
 - Icons: lucide-react.
@@ -47,6 +47,8 @@ If the user does not know what they want, use these defaults:
 - Responsiveness: mobile-first, nav collapses below md, typography uses clamp or Tailwind responsive sizes.
 
 ## Prompt Template
+
+Write the final implementation prompt to `design.md`, not to chat. If the design needs an AI-generated video, put only a hosted video URL placeholder in `design.md`; send the video-generation prompt separately in chat.
 
 ```markdown
 Build a [scope] for [product name], a [category] for [audience], using [stack]. The aesthetic is [visual world] with [signature visual]. Reproduce the following specification exactly.
@@ -72,11 +74,11 @@ Build a [scope] for [product name], a [category] for [audience], using [stack]. 
 - Radius/shadow/glass/noise utilities: [exact CSS if needed]
 
 ## Assets & Media
-- Background video/image/Spline/shader: [exact URL or asset brief]
+- Background video/image/Spline/shader: [exact hosted URL, non-video asset brief, or video URL placeholder]
 - Attributes: [autoPlay, loop, muted, playsInline]
 - Positioning: [object-cover, focal point, scale]
 - Overlay: [none or exact gradient/blur/noise]
-- Asset generation brief if no URL exists: [subject, camera, loop, safe areas, color grade]
+- Asset generation brief if no non-video URL exists: [subject, composition, safe areas, color grade]
 
 ## Layout Structure
 Render components in this order:
@@ -107,6 +109,8 @@ Render components in this order:
 ```
 
 ## Video Asset Brief Template
+
+Use this in the chat response only, not inside `design.md`. Tell the user to generate the video in their AI video tool, host the MP4/WebM, then replace the video URL placeholder in `design.md`.
 
 ```markdown
 Create a seamless looping background video for [brand/product].

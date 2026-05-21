@@ -5,7 +5,7 @@ description: Generate long, technically exact prompts for one-shot premium hero 
 
 # Premium UI Prompt Crafter
 
-Use this skill to turn a user's UI idea into a high-fidelity implementation prompt for Google AI Studio, Cursor, Lovable, Bolt, or another coding agent. The goal is not to implement the UI directly unless the user asks. The goal is to interrogate the brief, resolve ambiguity, then output a long, precise prompt that can one-shot a premium hero or landing page.
+Use this skill to turn a user's UI idea into a high-fidelity implementation prompt for Google AI Studio, Cursor, Lovable, Bolt, or another coding agent. The goal is not to implement the UI directly unless the user asks. The goal is to interrogate the brief, resolve ambiguity, then create a long, precise `design.md` prompt that can one-shot a premium hero or landing page.
 
 ## Core Principle
 
@@ -15,12 +15,14 @@ Prefer one strong visual concept over many loose ideas. A premium result usually
 
 ## Workflow
 
-1. Interview the user before generating the final prompt unless they already provided enough detail.
-2. Ask in batches, but be persistent. Missing visual details should become explicit assumptions only after a reasonable attempt to ask.
-3. Once requirements are clear, produce one complete prompt in a fenced markdown block.
-4. Default to React + TypeScript + Vite + Tailwind CSS unless the user asks for Next.js. For production app routes, use Next.js App Router. For Google AI Studio/manual generation, Vite is usually the safest default.
-5. Include asset-generation direction when video, 3D, mockup, or image assets are needed.
-6. Include "do not add" constraints to prevent the generator from inventing off-brand decorations.
+1. Interview the user hard before generating the final prompt unless they already provided unusually complete detail.
+2. Ask targeted follow-up batches until product, visual direction, copy, assets, stack, and constraints are mutually clear. If answers are vague, ask another sharper batch instead of rushing to assumptions.
+3. Do not generate the prompt until the user has answered enough to make the result specific, or explicitly tells you to proceed with named assumptions.
+4. Once requirements are clear, create or overwrite `design.md` with one complete implementation prompt. Do not stream the long prompt in chat.
+5. Default to React + TypeScript + Vite + Tailwind CSS unless the user asks for Next.js. For production app routes, use Next.js App Router. For Google AI Studio/manual generation, Vite is usually the safest default.
+6. Include asset-generation direction when 3D, mockup, or image assets are needed.
+7. Treat video as the highest-priority asset. If an AI-generated video is needed, show the video-generation prompt in chat only, tell the user to generate it in their video tool, host the MP4/WebM, and paste that hosted URL into `design.md`. Do not include the AI video-generation prompt inside `design.md`.
+8. Include "do not add" constraints to prevent the generator from inventing off-brand decorations.
 
 ## Requirement Interview
 
@@ -41,7 +43,7 @@ Ask about every category that affects fidelity:
 - Responsiveness: breakpoints, mobile substitutions, hidden elements, fluid typography.
 - Technical constraints: no backend, no routing, no extra libraries, use local assets, no placeholder copy, no random gradients.
 
-If the user is unsure, offer 3 opinionated directions and ask them to choose.
+If the user is unsure, offer 3 opinionated directions and ask them to choose. Keep interviewing after they choose until the brief is implementation-ready.
 
 ## Prompt Anatomy
 
@@ -51,7 +53,7 @@ Generate the final prompt with these sections, adapting as needed:
 2. **Non-Negotiables**: exact reproduction goals, forbidden additions, output framework, no backend unless asked.
 3. **Dependencies & Setup**: packages, font imports, Tailwind theme extensions, global CSS.
 4. **Design System**: colors, fonts, radii, shadows, glass/noise/gradient utilities, CSS variables.
-5. **Assets & Media**: exact URLs or generation briefs; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior.
+5. **Assets & Media**: exact URLs or non-video generation briefs; video URL placeholder or final hosted URL; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior.
 6. **Page/Section Structure**: ordered sections and component names.
 7. **Detailed Section Specs**: layout, copy, classes, inline styles, grid behavior, measurements, z-index, responsive changes.
 8. **Interactions & Animation**: exact delays, durations, easing curves, keyframes, Framer Motion/GSAP logic, hover/tap states.
@@ -76,25 +78,26 @@ Use these patterns when they fit the brief:
 
 ## Asset Generation Guidance
 
-When the design needs a video or image and the user has no asset, include a separate asset brief:
+When the design needs an image, 3D render, or mockup and the user has no asset, include a separate asset brief in `design.md`:
 
 - Subject and setting: what appears in frame.
 - Camera: lens feel, angle, motion, parallax, depth of field.
-- Loop: seamless duration, start/end similarity, boomerang or crossfade suitability.
+- Motion: subtle movement, loopability, or static treatment when relevant.
 - Composition: safe areas for text, focal point, object position, empty space.
 - Color grade: palette, contrast, grain, glow, exposure.
-- Technical output: 16:9 or 9:16, 1920x1080 minimum, MP4/WebM, muted loop, no text baked in unless required.
+- Technical output: aspect ratio, minimum resolution, transparent/background requirements, and no text baked in unless required.
 
-For AI video tools, ask for a clean loop with no captions, no watermark, no fast cuts, no brand text, and enough negative space for UI copy.
+For AI video tools, do not put the video-generation prompt in `design.md`. Put it in the chat response after creating `design.md`, and instruct the user to generate a clean loop with no captions, no watermark, no fast cuts, no brand text, and enough negative space for UI copy, then host it and replace the video URL placeholder in `design.md`.
 
 ## Final Output Rules
 
-- Output only the generated prompt unless the user asks for analysis too.
+- Write the generated implementation prompt to `design.md`; do not paste it into chat.
+- In chat, respond with a short note that `design.md` was created and, if video is needed, include only the AI video-generation prompt plus instructions to host the video and update the URL in `design.md`.
 - Make the prompt long enough to remove ambiguity. It is acceptable for premium prompts to be 1500-5000 words.
 - Do not include a markdown table in the final prompt unless the user explicitly wants one.
 - Make copy strings explicit and final. Do not write "add compelling copy".
 - Include exact code snippets only for fragile effects: liquid glass CSS, video fade logic, keyframes, SVG paths, complex animation loops.
-- When making assumptions, place them under "Assumptions baked into this prompt" before the final prompt.
+- When making assumptions, place them under "Assumptions baked into this prompt" inside `design.md`.
 
 ## Reference
 
