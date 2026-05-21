@@ -11,6 +11,8 @@ Use this skill to turn a user's UI idea into a high-fidelity implementation prom
 
 These prompts work because they replace vague taste words with concrete production instructions. Do not say only "beautiful, modern, aesthetic." Specify the stack, design system, section order, exact copy, typography, colors, media, layout geometry, animation timings, responsive behavior, interaction states, constraints, and acceptance criteria.
 
+The final `design.md` must read like an implementation blueprint, not a moodboard. Include concrete code elements wherever they reduce ambiguity: representative React/HTML structure, Tailwind class strings, CSS variables, custom CSS utilities, keyframes, JS/TS animation logic, asset manifests, component props/data arrays, icon names, exact ARIA labels, and responsive class changes. The target generator should be able to build the page without inventing layout, typography, or design-system details.
+
 Prefer one strong visual concept over many loose ideas. A premium result should usually have one video-led signature scene: fullscreen AI-generated video, ambient product footage, Spline/3D object with video backdrop, cinematic mockup, dashboard, glass card system, marquee, animated pipeline, or editorial typography.
 
 ## Workflow
@@ -36,9 +38,11 @@ Ask about every category that affects fidelity:
 - Media assets: existing URLs, generated asset brief, fallback poster, video loop behavior, focal point, overlays, blend modes.
 - Typography: display font, body font, accent font, weights, tracking, line-height, italic accent words. Instrument Sans is a beautiful hero/UI font and can quietly elevate a premium hero when the visual direction fits.
 - Color system: exact hex/HSL tokens, allowed accent colors, forbidden colors.
-- Layout: viewport height, section order, max widths, grid columns, pinned/floating elements, card sizes, border radii, spacing rhythm.
+- Design system implementation: CSS variables, Tailwind theme tokens, utility classes, component variants, border/shadow/glass/noise recipes, and exact icon names.
+- Layout: viewport height, section order, max widths, grid columns, pinned/floating elements, card sizes, border radii, spacing rhythm, z-index layers, absolute offsets, and container padding.
 - Navigation: logo, links, CTA, mobile menu behavior.
 - Copy: headline, subheadline, badges, stats, buttons, cards, testimonials, nav labels.
+- Code shape: component names, data arrays, representative JSX/HTML for complex sections, required CSS classes, JS hooks/effects, and file boundaries.
 - Animation: page-load entrance, text reveal, scroll effects, marquee, hover states, video fade loops, reduced-motion expectations.
 - Responsiveness: breakpoints, mobile substitutions, hidden elements, fluid typography.
 - Technical constraints: no backend, no routing, no extra libraries, use local assets, no placeholder copy, no random gradients.
@@ -51,15 +55,32 @@ Generate the final prompt with these sections, adapting as needed:
 
 1. **Opening Command**: one sentence naming the product, scope, stack, and intended aesthetic.
 2. **Non-Negotiables**: exact reproduction goals, forbidden additions, output framework, no backend unless asked.
-3. **Dependencies & Setup**: packages, font imports, Tailwind theme extensions, global CSS.
-4. **Design System**: colors, fonts, radii, shadows, glass/noise/gradient utilities, CSS variables.
-5. **Assets & Media**: exact URLs or non-video generation briefs; video URL placeholder or final hosted URL; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior. If video is intentionally omitted, state the reason clearly.
-6. **Page/Section Structure**: ordered sections and component names.
-7. **Detailed Section Specs**: layout, copy, classes, inline styles, grid behavior, measurements, z-index, responsive changes.
-8. **Interactions & Animation**: exact delays, durations, easing curves, keyframes, Framer Motion/GSAP logic, hover/tap states.
-9. **Responsive Rules**: mobile-first behavior, breakpoints, alternate layouts.
-10. **Implementation Notes**: reusable components, state logic, accessibility basics, cleanup for listeners/rAF.
-11. **Acceptance Criteria**: concise checklist describing what must be true when complete.
+3. **Files To Create/Edit**: exact files, exported components, imported assets, and whether code lives in `App.tsx`, `app/page.tsx`, `globals.css`, `tailwind.config`, or component files.
+4. **Dependencies & Setup**: packages, font imports, Tailwind theme extensions, global CSS reset/body styles.
+5. **Design System Tokens**: colors as hex/HSL/CSS variables, typography scale, font stacks, radii, spacing rhythm, shadows, glass/noise/gradient utilities, and component variant recipes.
+6. **Asset Manifest & Media Handling**: exact URLs or non-video generation briefs; video URL placeholder or final hosted URL; video attributes; object-fit, focal point, poster, overlay, blend mode, loop/fade behavior. If video is intentionally omitted, state the reason clearly.
+7. **Data & Copy Constants**: arrays/objects for nav links, stats, cards, testimonials, feature rows, logos, and every visible copy string.
+8. **Page/Section Structure**: ordered sections, component names, semantic HTML tags, z-index/layering model, and DOM hierarchy.
+9. **Detailed Section Specs**: layout, copy, classes, inline styles, grid behavior, measurements, z-index, responsive changes, and representative JSX/HTML snippets for visually important parts.
+10. **CSS & Tailwind Implementation**: exact class strings, CSS variables, custom utilities, pseudo-elements, keyframes, media queries, and when to use inline styles.
+11. **Interactions & Animation**: exact delays, durations, easing curves, Framer Motion/GSAP logic, JS hooks/effects, hover/tap states, cleanup for listeners/rAF, and reduced-motion behavior.
+12. **Responsive Rules**: mobile-first behavior, breakpoints, alternate layouts, mobile-specific copy/media decisions, and exact class substitutions.
+13. **Accessibility & QA Notes**: ARIA labels, focus states, contrast requirements, image alt text, keyboard behavior, and performance constraints.
+14. **Acceptance Criteria**: concise checklist describing what must be true when complete.
+
+## Required Code-Level Detail
+
+Every `design.md` must include enough code-level detail to prevent the generator from designing by guesswork:
+
+- For critical visual or behavioral elements, do not merely describe the effect. Provide exact implementation blocks with file names, constants, component structure, CSS/keyframes, hooks/effects, cleanup logic, class names, and edge-case notes. "Representative" snippets are acceptable only for simple repeated layout, not for signature effects, scroll/video behavior, animation systems, navigation interactions, coded mockups, or the main hero composition.
+- Show representative JSX/HTML for the navbar, hero, and any complex visual section. Do not write a full app unless needed, but include the actual tag hierarchy, key class names, data mapping pattern, and component names.
+- Show CSS/Tailwind implementation for the design system: `:root` tokens, font imports, custom utility classes, keyframes, pseudo-elements, and any Tailwind config extensions that matter.
+- Show JS/TS logic for nontrivial behavior: video crossfade, marquee arrays, scroll listeners, `requestAnimationFrame`, Framer Motion variants, GSAP timelines, mobile menu state, or pointer interactions.
+- Show an asset manifest with variable names, hosted URLs/placeholders, expected dimensions, formats, fallback poster, focal point, alt text, and whether the asset is generated, provided, or coded in JSX/SVG.
+- Specify exact typography at each breakpoint: font family, size or `clamp()`, weight, tracking, line-height, max-width, text balance/wrap behavior, and any highlighted words.
+- Specify exact layout geometry: section min-height, container width, padding, grid/flex rules, card sizes, gap scale, absolute positions, border radius, z-index, and overflow behavior.
+- Specify exact interaction states: hover, active, focus-visible, disabled, loading, reduced-motion, and mobile menu open/closed states.
+- If a section is visually important but not shown as code, add a short reason and compensate with exact class strings, measurements, and copy.
 
 ## MotionSites-Style Patterns To Use
 
@@ -75,6 +96,7 @@ Use these patterns when they fit the brief:
 - Marquees by rendering arrays twice and translating `0 -> -50%` with linear infinite CSS animation.
 - Staggered entrances using exact delays: badge 0.1s, title 0.2s, subtitle 0.3s, CTAs 0.4s, mockup 0.5s, adjusted to the composition.
 - Strong negative constraints: no purple/indigo, no random blobs, no dark overlay, no extra sections, no placeholder copy, no UI libraries.
+- Coded mockup systems with explicit arrays and JSX fragments for cards, chart bars, terminal rows, workflow nodes, avatars, or product panels instead of asking for generic mockups.
 
 ## Asset Generation Guidance
 
@@ -96,7 +118,8 @@ For AI video tools, default to providing a video-generation prompt for the hero 
 - Make the prompt long enough to remove ambiguity. It is acceptable for premium prompts to be 1500-5000 words.
 - Do not include a markdown table in the final prompt unless the user explicitly wants one.
 - Make copy strings explicit and final. Do not write "add compelling copy".
-- Include exact code snippets only for fragile effects: liquid glass CSS, video fade logic, keyframes, SVG paths, complex animation loops.
+- Include exact code snippets for all implementation-critical design details: representative JSX/HTML structure, CSS variables/utilities, Tailwind config extensions, keyframes, SVG paths, data arrays, and JS/TS interaction logic. Use snippets to constrain the design system, not just fragile effects.
+- For signature effects and hero-defining systems, write near copy-paste implementation instructions instead of summary prose. Include exact files, imports, constants, refs/state, effects, event listeners, cleanup, class names, animation timing, responsive branches, and failure/edge-case guards.
 - When making assumptions, place them under "Assumptions baked into this prompt" inside `design.md`.
 
 ## Reference

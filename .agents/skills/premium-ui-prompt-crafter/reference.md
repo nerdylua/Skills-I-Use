@@ -8,11 +8,13 @@ Recurring traits:
 
 - Clear scope: hero only, two full-height sections, or named landing page sections.
 - Stack pinned early: React, TypeScript, Vite/Next.js, Tailwind, animation library, icon package, forbidden libraries.
+- File and component boundaries are explicit: which files to create, component names, data arrays, global CSS, and asset imports.
 - Typography treated as a core asset: font source, weights, global application, display/body/accent roles, tracking and line-height.
 - Colors are tokens, not adjectives: exact hex or HSL variables, semantic usage, forbidden colors.
 - One signature visual, with video as the preferred default: fullscreen AI-generated video, ambient product footage, Spline scene with motion backdrop, shader stack, dashboard mockup, glass orb, animated pipeline, marquee gallery, or large editorial type.
 - Media details are exact: URL, object-fit, focal point, scale, overlay/no-overlay, poster, playback attributes, crossfade logic.
 - Layout is measurable: viewport height, max-widths, padding, grid columns, absolute positions, z-index, radius, card dimensions.
+- Implementation details are visible: representative JSX/HTML, Tailwind class strings, CSS variables, custom utilities, keyframes, JS/TS hooks, and interaction state logic.
 - Copy is complete: headline, subheadline, nav labels, CTA labels, stats, card text, testimonial text.
 - Animation is mechanical: delays, durations, easing, keyframes, scroll ranges, hover/tap states, requestAnimationFrame logic.
 - Responsive behavior is explicit: breakpoints, hidden desktop/mobile elements, alternate mobile menus, fluid typography.
@@ -20,7 +22,7 @@ Recurring traits:
 
 ## Quality Bar
 
-A generated prompt should allow a capable coding model to build the UI without asking design questions. If a detail affects visual identity, specify it. If a detail does not matter, constrain it with a default instead of leaving it open.
+A generated prompt should allow a capable coding model to build the UI without asking design or implementation questions. If a detail affects visual identity, specify it. If a detail affects how the page is built, show it as code, class strings, variables, or data structures. If a detail does not matter, constrain it with a default instead of leaving it open.
 
 Good:
 "Use a fixed fullscreen background video, object-cover, object-position center top, scale 1.08. Do not add a dark overlay; contrast comes from glass panels."
@@ -33,6 +35,12 @@ Good:
 
 Weak:
 "Use elegant typography."
+
+Good:
+"Create `const metrics = [{ label: 'Median deployment', value: '8m' }, ...]` and map it into three `.glass-card` stat tiles. Each tile is `min-h-[116px] rounded-[28px] border border-white/10 bg-white/[0.035] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)]`."
+
+Weak:
+"Add some premium stat cards."
 
 ## Interview Defaults
 
@@ -60,25 +68,59 @@ Build a [scope] for [product name], a [category] for [audience], using [stack]. 
 - [Forbidden colors/decorations/placeholders]
 - [Responsiveness requirement]
 
+## Files To Create/Edit
+- [src/App.tsx or app/page.tsx: component structure]
+- [src/index.css or app/globals.css: font imports, tokens, utilities, keyframes]
+- [tailwind.config.* if needed: theme extension]
+- [assets or public paths if needed]
+
 ## Dependencies & Setup
 - [packages]
 - [font imports]
 - [Tailwind config or CSS variables]
 - [global body/root styles]
 
-## Design System
-- Background: [token]
-- Foreground: [token]
-- Accent: [token]
-- Font roles: [display/body/accent]
-- Radius/shadow/glass/noise utilities: [exact CSS if needed]
+## Design System Tokens
+Define these exactly:
+```css
+:root {
+  --background: [hex/hsl];
+  --foreground: [hex/hsl];
+  --muted: [hex/hsl];
+  --accent: [hex/hsl];
+  --radius-card: [value];
+}
+```
+- Typography: [font family, import URL, weights, sizes/clamp, tracking, line-height]
+- Components: [button, nav pill, card, badge, input, mockup panel variants]
+- Utilities: [glass/noise/gradient/ring CSS classes, pseudo-elements, shadows]
 
-## Assets & Media
+## Asset Manifest & Media Handling
 - Background video/image/Spline/shader: [exact hosted URL, non-video asset brief, or video URL placeholder]
 - Attributes: [autoPlay, loop, muted, playsInline]
 - Positioning: [object-cover, focal point, scale]
 - Overlay: [none or exact gradient/blur/noise]
+- Manifest:
+```ts
+const media = {
+  heroVideo: "[HOSTED_VIDEO_URL]",
+  heroPoster: "[POSTER_URL]",
+  logoAlt: "[exact alt text]"
+};
+```
 - Asset generation brief if no non-video URL exists: [subject, composition, safe areas, color grade]
+
+## Data & Copy Constants
+Use explicit arrays/objects for every repeated UI element:
+```ts
+const navItems = [
+  { label: "[label]", href: "#[id]" }
+];
+
+const stats = [
+  { value: "[value]", label: "[label]" }
+];
+```
 
 ## Layout Structure
 Render components in this order:
@@ -87,19 +129,68 @@ Render components in this order:
 3. [Optional section]
 
 ## Navbar
-[Exact logo, links, buttons, layout, mobile behavior]
+[Exact logo, links, buttons, layout, mobile behavior, ARIA labels]
+
+Representative structure:
+```tsx
+function Navbar() {
+  return (
+    <header className="[exact classes]">
+      <nav className="[exact classes]" aria-label="Primary navigation">
+        {/* exact logo/link/button hierarchy */}
+      </nav>
+    </header>
+  );
+}
+```
 
 ## Hero
 [Exact section height, alignment, headline, subheadline, CTA, stats/mockups/cards, classes, spacing, z-index]
 
+Representative structure:
+```tsx
+function Hero() {
+  return (
+    <section className="[exact classes]">
+      {/* video/media layer, overlay layer, content layer, mockup/card layer */}
+    </section>
+  );
+}
+```
+
 ## Additional Sections
-[Repeat with exact layouts and copy]
+[Repeat with exact layouts, copy, data arrays, class strings, and representative JSX for complex sections]
+
+## CSS & Tailwind Implementation
+Include exact CSS/Tailwind details:
+```css
+.glass-card {
+  [properties]
+}
+
+@keyframes [name] {
+  [steps]
+}
+```
 
 ## Animations & Interactions
 [Entrance timings, hover/tap, marquee, scroll, video fade, cleanup]
 
+For nontrivial logic, show JS/TS or animation variants:
+```ts
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: [value] } }
+};
+```
+
 ## Responsive Behavior
-[Mobile/tablet/desktop rules]
+[Mobile/tablet/desktop rules, exact breakpoint class substitutions, hidden/reordered elements]
+
+## Accessibility & Performance
+- [ARIA labels, alt text, focus-visible styles, contrast notes]
+- [prefers-reduced-motion behavior]
+- [image/video loading, poster, compression expectations]
 
 ## Acceptance Criteria
 - [Visual signature is present]
@@ -107,6 +198,22 @@ Render components in this order:
 - [Responsive behavior works]
 - [Animations and media behave as specified]
 ```
+
+## Code Detail Checklist
+
+Before writing `design.md`, confirm the prompt includes:
+
+- Concrete file map and component names.
+- Representative JSX/HTML for navbar, hero, and complex visual sections.
+- Near copy-paste implementation blocks for signature effects, scroll/video behavior, animation systems, navigation interactions, coded mockups, and the main hero composition. Include file names, imports, constants, refs/state, effects, cleanup, class names, timings, responsive branches, and edge-case guards.
+- Exact Tailwind class strings for key containers, text, cards, buttons, and media layers.
+- CSS variables, custom utilities, pseudo-elements, and keyframes where relevant.
+- JS/TS snippets for data arrays and nontrivial interactions.
+- Asset manifest with URL placeholders, dimensions, formats, alt text, poster, focal point, and generation status.
+- Typography specs for desktop, tablet, and mobile.
+- Layout measurements: min-heights, max-widths, padding, gaps, card sizes, z-index, absolute offsets.
+- Interaction states: hover, active, focus-visible, mobile menu open/closed, reduced motion.
+- Negative constraints that prevent generic filler.
 
 ## Video Asset Brief Template
 
@@ -171,6 +278,8 @@ Manual video crossfade behavior:
 Avoid:
 
 - Asking for "beautiful UI" without specifying what makes it beautiful.
+- Writing a moodboard when the user needs an implementation prompt.
+- Omitting JSX/HTML/CSS/JS details for visually important areas.
 - Multiple competing signature visuals.
 - Generic placeholder copy.
 - Unbounded library choices.
